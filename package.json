@@ -1,0 +1,23 @@
+{
+  "name": "pitay-api",
+  "version": "1.0.0",
+  "description": "API for Pitay App - app for asking anonymous questions.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Vladyslav Havriutkin",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}

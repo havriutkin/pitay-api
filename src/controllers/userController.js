@@ -1,3 +1,5 @@
+// ? Should try-except query block be a separate function? Check what returned data looks like
+
 const { query } = require('../config/db.config');
 
 /* ------------- CREATE ------------- */
@@ -39,4 +41,32 @@ module.exports.getUserByEmail = async ({email}) => {
     }
 }
 
-// TODO: UPDATE + DELETE 
+
+/* ------------- UPDATE ------------- */
+
+module.exports.updateUserById = async ({userId, username, password, email}) => {
+    const sql = "SELECT update_user($1)";
+    const parameters = [userId, username, password, email];
+    // ! NOT SAFE. PASSWORD IS NOT HASHED
+    // TODO HASH PASSWORD
+    try {
+        const result = await query(sql, parameters);
+        return result;
+    } catch(err) {
+        throw new Error(`Error when updating user by id: \n\t${err.message}`);
+    }
+}
+
+/* ------------- DELETE ------------- */
+
+module.exports.deleteUserById = async ({userId}) => {
+    const sql = "SELECT delete_user($1)";
+    const parameters = [userId];
+
+    try {
+        const result = await query(sql, parameters);
+        return result;
+    } catch(err) {
+        throw new Error(`Error when deleting user by id: \n\t${err.message}`);
+    }
+}

@@ -76,4 +76,50 @@ BEGIN
         WHEN unique_violation THEN 
             RAISE EXCEPTION 'Email already exists.';
 END;
-$$;                    
+$$;
+
+-- Update
+CREATE OR REPLACE FUNCTION update_user(
+    _id integer,
+    _username varchar,
+    _password varchar,
+    _email varchar
+)
+RETURNS integer
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM "user"  WHERE id = _id) THEN
+        RAISE EXCEPTION 'No user found with id %.', _id;
+    END IF;
+
+    UPDATE "user"
+    SET username = _username, password = _password, email = _email
+    WHERE id = _id;
+
+    RETURN _id;
+
+    EXCEPTION
+        WHEN unique_violation THEN 
+            RAISE EXCEPTION 'Email already exists.';
+END;
+$$;
+
+-- Delete
+CREATE OR REPLACE FUNCTION delete_user(
+    _id integer
+)
+RETURNS integer
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM "user"  WHERE id = _id) THEN
+        RAISE EXCEPTION 'No user found with id %.', _id;
+    END IF;
+
+    DELETE FROM "user"
+    WHERE id = _id;
+
+    RETURN _id;
+END;
+$$;

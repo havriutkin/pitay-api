@@ -5,7 +5,6 @@ const { query } = require('../config/db.config');
 /* ------------- CREATE ------------- */
 
 module.exports.createUser = async ({username, password, email}) => {
-    // ! NOT SAVE. PASSWORD MUST BE HASHED
     const sql = "SELECT insert_user($1, $2, $3)";
     const parameters = [username, password, email]
     try {

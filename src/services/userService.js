@@ -10,7 +10,7 @@ module.exports.createUser = async ({username, password, email}) => {
     const parameters = [username, password, email]
     try {
         const result = await query(sql, parameters);
-        return result[0];
+        return result;
     } catch(err) {
         throw new Error(`Error when creating user: \n\t${err.message}`);
     }
@@ -24,7 +24,7 @@ module.exports.getUserById = async ({userId}) => {
     const parameters = [userId];
     try {
         const result = await query(sql, parameters);
-        return result[0];
+        return result;
     } catch (err) {
         throw new Error(`Error when getting user by id: \n\t${err.message}`);
     }

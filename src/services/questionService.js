@@ -7,8 +7,8 @@ module.exports.createQuestion = async ({question, lessonId}) => {
     const parameters = [question, lessonId];
 
     try {
-        const response = await query(sql, parameters);
-        return response[0];
+        const result = await query(sql, parameters);
+        return result;
     } catch(err) {
         throw new Error(`Error when creating question: \n\t${err.message}`);
     }
@@ -21,8 +21,8 @@ module.exports.getQuestionById = async ({questionId}) => {
     const parameters = [questionId];
 
     try {
-        const response = await query(sql, parameters);
-        return response[0];
+        const result = await query(sql, parameters);
+        return result;
     } catch(err) {
         throw new Error(`Error when getting question by id: \n\t${err.message}`);
     }
@@ -33,8 +33,8 @@ module.exports.getQuestionsByLessonId = async ({lessonId}) => {
     const parameters = [lessonId];
 
     try {
-        const response = await query(sql, parameters);
-        return response;
+        const result = await query(sql, parameters);
+        return result;
     } catch(err) {
         throw new Error(`Error when getting question by lesson id: \n\t${err.message}`);
     }

@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
 
 const authRouter = require('./src/routes/authRouter');
 const errorHandler = require('./src/middlewares/errorHandlerMiddleware');
@@ -7,9 +8,15 @@ const errorHandler = require('./src/middlewares/errorHandlerMiddleware');
 const app = express();
 const port = process.env.PORT || 4000;
 
+
+// --------------- SECURITY ---------------
 // Disable powered-by header
 app.disable('x-powered-by')
 
+app.use(helmet());
+
+
+// --------------- MIDDLEWARES ---------------
 // Static files 
 app.use(express.static(__dirname + '/public'));
 
@@ -22,7 +29,7 @@ app.use(
 );
 
 
-// ROUTES
+// --------------- ROUTES ---------------
 app.use('/api/auth', authRouter);
 
 app.use(errorHandler);

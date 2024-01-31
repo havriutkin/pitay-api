@@ -65,7 +65,7 @@ DECLARE
     new_question_id integer;
 BEGIN
     INSERT INTO "question" (question, is_answered, fk_lesson_id)
-    VALUES (_question, False, _lesson_id)
+    VALUES (_question, FALSE, _lesson_id)
     RETURNING id INTO new_question_id;
 
     RETURN new_question_id;
@@ -75,5 +75,53 @@ BEGIN
             RAISE EXCEPTION 'Lesson not found.';
         WHEN not_null_violation THEN
             RAISE EXCEPTION 'Not enough data.';
+END;
+$$;
+
+-- Update
+CREATE OR REPLACE FUNCTION update_question(
+    _id integer,
+    _question text,
+    _is_answered boolean,
+    _lesson_id integer
+)
+RETURNS integer
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM "question"  WHERE id = _id) THEN
+        RAISE EXCEPTION 'No question found with id %.', _id;
+    END IF;
+
+    UPDATE "question"
+    SET question = _question, is_answered = _is_answered, fk_lesson_id = _lesson_id
+    WHERE id = _id;
+
+    RETURN _id;
+
+    EXCEPTION
+        WHEN foreign_key_violation THEN
+            RAISE EXCEPTION 'Lesson not found.';
+        WHEN not_null_violation THEN
+            RAISE EXCEPTION 'Not enough data.';
+END;
+$$;
+
+-- Delete
+CREATE OR REPLACE FUNCTION delete_question(
+    _id integer
+)
+RETURNS integer
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM "question"  WHERE id = _id) THEN
+        RAISE EXCEPTION 'No question found with id %.', _id;
+    END IF;
+
+    DELETE FROM "question"
+    WHERE id = _id;
+
+    RETURN _id;
 END;
 $$;

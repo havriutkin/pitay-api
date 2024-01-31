@@ -75,6 +75,8 @@ BEGIN
     EXCEPTION
         WHEN unique_violation THEN 
             RAISE EXCEPTION 'Email already exists.';
+        WHEN not_null_violation THEN
+            RAISE EXCEPTION 'Not enough data.';
 END;
 $$;
 
@@ -102,6 +104,8 @@ BEGIN
     EXCEPTION
         WHEN unique_violation THEN 
             RAISE EXCEPTION 'Email already exists.';
+        WHEN not_null_violation THEN
+            RAISE EXCEPTION 'Not enough data.';
 END;
 $$;
 

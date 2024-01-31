@@ -116,3 +116,56 @@ BEGIN
             RAISE EXCEPTION 'Title is too long.';
 END;
 $$;
+
+-- Update
+CREATE OR REPLACE FUNCTION update_lesson(
+    _id integer,
+    _title varchar(20),
+    _private_key varchar,
+    _public_key varchar,
+    _fk_owner_id integer
+)
+RETURNS integer
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM "lesson"  WHERE id = _id) THEN
+        RAISE EXCEPTION 'No lesson found with id %.', _id;
+    END IF;
+
+    UPDATE "lesson"
+    SET title = _title, private_key = _private_key, public_key = _public_key, fk_owner_id = _fk_owner_id
+    WHERE id = _id;
+
+    RETURN _id;
+
+    EXCEPTION
+        WHEN unique_violation THEN 
+            RAISE EXCEPTION 'Key already exists.';
+        WHEN foreign_key_violation THEN
+            RAISE EXCEPTION 'Owner not found.';
+        WHEN not_null_violation THEN
+            RAISE EXCEPTION 'Not enough data.';
+        WHEN string_data_right_truncation THEN
+            RAISE EXCEPTION 'Title is too long.';
+END;
+$$;
+
+-- Delete
+CREATE OR REPLACE FUNCTION delete_lesson(
+    _id integer
+)
+RETURNS integer
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM "lesson"  WHERE id = _id) THEN
+        RAISE EXCEPTION 'No lesson found with id %.', _id;
+    END IF;
+
+    DELETE FROM "lesson"
+    WHERE id = _id;
+
+    RETURN _id;
+END;
+$$;

@@ -39,3 +39,31 @@ module.exports.getQuestionsByLessonId = async ({lessonId}) => {
         throw new Error(`Error when getting question by lesson id: \n\t${err.message}`);
     }
 }
+
+/* ------------- UPDATE ------------- */
+
+module.exports.updateQuestionById = async ({questionId, question, isAnswered, lessonId}) => {
+    const sql = "SELECT update_question($1, $2, $3, $4)";
+    const parameters = [questionId, question, isAnswered, lessonId];
+
+    try {
+        const result = query(sql, parameters);
+        return result;
+    } catch(err) {
+        throw new Error(`Error when updating question by id: \n\t${err.message}`);
+    }
+}
+
+/* ------------- DELETE ------------- */
+
+module.exports.deleteQuestionById = async ({questionId}) => {
+    const sql = "SELECT delete_question($1)";
+    const parameters = [questionId];
+    
+    try {
+        const result = query(sql, parameters);
+        return result;
+    } catch(err) {
+        throw new Error(`Error when deleting question by id: \n\t${err.message}`);
+    }
+}

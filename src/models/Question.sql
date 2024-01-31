@@ -18,10 +18,6 @@ RETURNS TABLE(
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM "question" WHERE id = _id) THEN
-        RAISE EXCEPTION 'No questions found with id %.', _id;
-    END IF;
-
     RETURN QUERY
     SELECT id, question, is_answered as isAnswered, fk_lesson_id as lessonId
     FROM "question"
@@ -42,10 +38,6 @@ RETURNS TABLE(
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM "question" WHERE fk_lesson_id = _lesson_id) THEN
-        RAISE EXCEPTION 'No questions found with lesson id %.', _lesson_id;
-    END IF;
-
     RETURN QUERY
     SELECT id, question, is_answered as isAnswered, fk_lesson_id as lessonId
     FROM "question"

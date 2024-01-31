@@ -18,16 +18,12 @@ RETURNS TABLE(
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM "user" WHERE id = _id) THEN
-        RAISE EXCEPTION 'No user found with id %', _id;
-    END IF; 
-
     RETURN QUERY 
     SELECT id, email, username, password
     FROM "user"
     WHERE id = _id;
 END;
-$$
+$$;
 
 -- Get user by email 
 CREATE OR REPLACE FUNCTION get_user_by_email(
@@ -42,16 +38,12 @@ RETURNS TABLE(
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM "user" WHERE email = _email) THEN
-        RAISE EXCEPTION 'No user found with email %', _email;
-    END IF; 
-
     RETURN QUERY 
     SELECT id, email, username, password
     FROM "user"
     WHERE email = _email;
 END;
-$$
+$$;
 
 -- User insetion
 CREATE OR REPLACE FUNCTION insert_user(

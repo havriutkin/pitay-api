@@ -21,10 +21,6 @@ RETURNS TABLE(
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM "lesson" WHERE id = _id) THEN
-        RAISE EXCEPTION 'No lessons found with id %.', _id;
-	END IF;
-    
     RETURN QUERY
     SELECT id, title, private_key AS privateKey, public_key AS publicKey, fk_owner_id AS fk_owner_id
     FROM "lesson"
@@ -47,10 +43,6 @@ RETURNS TABLE(
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM "lesson" WHERE public_key = _public_key) THEN
-        RAISE EXCEPTION 'No lessons found with public key %.', _public_key;
-	END IF;
-
     RETURN QUERY
     SELECT id, title, private_key AS privateKey, public_key AS publicKey, fk_owner_id AS fk_owner_id
     FROM "lesson"
@@ -73,10 +65,6 @@ RETURNS TABLE(
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM "lesson" WHERE fk_owner_id = _owner_id) THEN
-        RAISE EXCEPTION 'No lessons found with owner id %.', _owner_id;
-	END IF;
-	
     RETURN QUERY
     SELECT id, title, private_key AS privateKey, public_key AS publicKey, fk_owner_id AS fk_owner_id
     FROM "lesson"

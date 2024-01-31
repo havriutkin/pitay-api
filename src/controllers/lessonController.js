@@ -59,9 +59,9 @@ module.exports.getLessonsByOwnerId = async ({ownerId}) => {
 
 /* ------------- UPDATE ------------- */
 
-module.exports.updateLessonById = async ({lessonId}) => {
-    const sql = "SELECT update_lesson($1)";
-    const parameters = [lessonId];
+module.exports.updateLessonById = async ({lessonId, title, privateKey, publicKey, ownerId}) => {
+    const sql = "SELECT update_lesson($1, $2, $3, $4, $5)";
+    const parameters = [lessonId, title, privateKey, publicKey, ownerId];
 
     try {
         const result = await query(sql, parameters);

@@ -22,9 +22,9 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
     RETURN QUERY
-    SELECT id, title, private_key AS privateKey, public_key AS publicKey, fk_owner_id AS fk_owner_id
-    FROM "lesson"
-    WHERE id = _id;
+    SELECT l.id, l.title, l.private_key AS privateKey, l.public_key AS publicKey, l.fk_owner_id AS ownerId
+    FROM "lesson" l
+    WHERE l.id = _id;
 END;
 $$;
 
@@ -44,9 +44,9 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
     RETURN QUERY
-    SELECT id, title, private_key AS privateKey, public_key AS publicKey, fk_owner_id AS fk_owner_id
-    FROM "lesson"
-    WHERE public_key = _public_key;
+    SELECT l.id, l.title, l.private_key AS privateKey, l.public_key AS publicKey, l.fk_owner_id AS ownerId
+    FROM "lesson" l
+    WHERE l.public_key = _public_key;
 END;
 $$;
 
@@ -66,9 +66,9 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
     RETURN QUERY
-    SELECT id, title, private_key AS privateKey, public_key AS publicKey, fk_owner_id AS fk_owner_id
-    FROM "lesson"
-    WHERE fk_owner_id = _owner_id;
+    SELECT l.id, l.title, l.private_key AS privateKey, l.public_key AS publicKey, l.fk_owner_id AS ownerId
+    FROM "lesson" l
+    WHERE l.fk_owner_id = _owner_id;
 END;
 $$;
 

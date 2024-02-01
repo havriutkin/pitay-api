@@ -19,9 +19,9 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
     RETURN QUERY 
-    SELECT id, email, username, password
-    FROM "user"
-    WHERE id = _id;
+    SELECT u.id, u.email, u.username, u.password
+    FROM "user" u
+    WHERE u.id = _id;
 END;
 $$;
 
@@ -39,9 +39,9 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
     RETURN QUERY 
-    SELECT id, email, username, password
-    FROM "user"
-    WHERE email = _email;
+    SELECT u.id, u.email, u.username, u.password
+    FROM "user" u
+    WHERE u.email = _email;
 END;
 $$;
 

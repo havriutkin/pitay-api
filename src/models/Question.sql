@@ -19,9 +19,9 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
     RETURN QUERY
-    SELECT id, question, is_answered as isAnswered, fk_lesson_id as lessonId
-    FROM "question"
-    WHERE id = _id;
+    SELECT q.id, q.question, q.is_answered as isAnswered, q.fk_lesson_id as lessonId
+    FROM "question" q
+    WHERE q.id = _id;
 END;
 $$;
 
@@ -39,9 +39,9 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
     RETURN QUERY
-    SELECT id, question, is_answered as isAnswered, fk_lesson_id as lessonId
-    FROM "question"
-    WHERE fk_lesson_id = _lesson_id;
+    SELECT q.id, q.question, q.is_answered as isAnswered, q.fk_lesson_id as lessonId
+    FROM "question" q
+    WHERE q.fk_lesson_id = _lesson_id;
 END;
 $$;
 

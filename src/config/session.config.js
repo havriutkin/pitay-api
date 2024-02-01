@@ -1,9 +1,12 @@
 require('dotenv').config();
 const session = require('express-session');
-const pgStore = require('./pgStore.config');
+const pgSession = require('connect-pg-simple')(session);
+const { pool } = require('./db.config');
 
-module.exports.sessionMiddleware = session({
-    store: pgStore,
+module.exports.middleware = session({
+    store: new pgSession({
+        pool: pool,
+    }),
     secret: process.env.SESSIONKEY,
     resave: false,
     saveUninitialized: false,

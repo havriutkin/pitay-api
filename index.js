@@ -4,8 +4,8 @@ const helmet = require('helmet');
 
 const authRouter = require('./src/routes/authRouter');
 const errorHandler = require('./src/middlewares/errorHandlerMiddleware');
-const sessionMiddleware = require('./src/config/session.config');
-const passport = require('./src/controllers/authController');
+const session = require('./src/config/session.config');
+const { passport } = require('./src/config/passport.config');
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -23,7 +23,7 @@ app.use(helmet());
 app.use(express.static(__dirname + '/public'));
 
 // Session
-app.use(sessionMiddleware);
+app.use(session.middleware);
 
 // Passport session
 app.use(passport.authenticate('session'));

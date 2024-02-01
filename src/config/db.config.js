@@ -18,4 +18,4 @@ const query = async(sql, params) => {
     }
 }
 
-module.exports = {query}
+module.exports = {query, pool}

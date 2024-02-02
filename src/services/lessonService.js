@@ -4,12 +4,8 @@ const { query } = require("../config/db.config");
 /* ------------- CREATE ------------- */
 
 module.exports.createLesson = async ({title, ownerId}) => {
-    // ! NOT SAFE
-    // TODO: GENERATE PRIVATE AND PUBLIC KEYS BASED ON TITLE AND OWNERID AND RANDOM
-    const privateKey = "TODO";
-    const publicKey = "TODO";
-    const sql = "SELECT FROM insert_lesson($1, $2, $3, $4)";
-    const parameters = [title, privateKey, publicKey, ownerId]
+    const sql = "SELECT * FROM insert_lesson($1, $2)";
+    const parameters = [title, ownerId]
     try {
         const result = await query(sql, parameters);
         return result;
@@ -59,9 +55,9 @@ module.exports.getLessonsByOwnerId = async ({ownerId}) => {
 
 /* ------------- UPDATE ------------- */
 
-module.exports.updateLessonById = async ({lessonId, title, privateKey, publicKey, ownerId}) => {
-    const sql = "SELECT update_lesson($1, $2, $3, $4, $5)";
-    const parameters = [lessonId, title, privateKey, publicKey, ownerId];
+module.exports.updateLessonById = async ({lessonId, title}) => {
+    const sql = "SELECT update_lesson($1, $2)";
+    const parameters = [lessonId, title];
 
     try {
         const result = await query(sql, parameters);

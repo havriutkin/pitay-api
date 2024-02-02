@@ -4,7 +4,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE lesson(
     id SERIAL PRIMARY KEY,
-    title varchar(20) NOT NULL,
+    title varchar(60) NOT NULL,
     private_key varchar NOT NULL UNIQUE,
     public_key varchar NOT NULL UNIQUE,
     fk_owner_id integer NOT NULL REFERENCES "user" (id)     
@@ -17,7 +17,7 @@ CREATE OR REPLACE FUNCTION get_lesson_by_id(
 )
 RETURNS TABLE(
     id integer,
-    title varchar(20),
+    title varchar(60),
     private_key varchar,
     public_key varchar,
     owner_id integer
@@ -39,7 +39,7 @@ CREATE OR REPLACE FUNCTION get_lesson_by_public_key(
 )
 RETURNS TABLE(
     id integer,
-    title varchar(20),
+    title varchar(60),
     private_key varchar,
     public_key varchar,
     owner_id integer
@@ -61,7 +61,7 @@ CREATE OR REPLACE FUNCTION get_lesson_by_owner_id(
 )
 RETURNS TABLE(
     id integer,
-    title varchar(20),
+    title varchar(60),
     private_key varchar,
     public_key varchar,
     fk_owner_id integer
@@ -79,7 +79,7 @@ $$;
 
 -- Insert
 CREATE OR REPLACE FUNCTION insert_lesson(
-    _title varchar(20),
+    _title varchar(60),
     _fk_owner_id integer
 )
 RETURNS varchar
@@ -110,24 +110,24 @@ $$;
 -- Update
 CREATE OR REPLACE FUNCTION update_lesson(
     _id integer,
-    _title varchar(20),
-    _private_key varchar,
-    _public_key varchar,
-    _fk_owner_id integer
+    _title varchar(60)
 )
-RETURNS integer
+RETURNS varchar
 LANGUAGE plpgsql
 AS $$
+DECLARE
+    _public_key varchar; 
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM "lesson"  WHERE id = _id) THEN
         RAISE EXCEPTION 'No lesson found with id %.', _id;
     END IF;
 
     UPDATE "lesson"
-    SET title = _title, private_key = _private_key, public_key = _public_key, fk_owner_id = _fk_owner_id
-    WHERE id = _id;
+    SET title = _title
+    WHERE id = _id
+    RETURNING public_key INTO _public_key;
 
-    RETURN _id;
+    RETURN _public_key;
 
     EXCEPTION
         WHEN unique_violation THEN 

@@ -3,11 +3,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 
-const authRouter = require('./src/routes/authRouter');
+
 const errorHandler = require('./src/middlewares/errorHandlerMiddleware');
 const session = require('./src/config/session.config');
 const { passport } = require('./src/config/passport.config');
 const { initializeSocketIo } = require('./src/config/socket.config');
+
+const authRouter = require('./src/routes/authRouter');
+const lessonRouter = require('./src/routes/lessonRouter');
 
 const port = process.env.PORT || 4000;
 const app = express();
@@ -46,6 +49,7 @@ initializeSocketIo(server);
 
 // --------------- ROUTES ---------------
 app.use('/api/auth', authRouter);
+app.use('/api/lesson', lessonRouter);
 
 // Error handler
 app.use(errorHandler);

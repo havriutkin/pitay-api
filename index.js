@@ -1,3 +1,4 @@
+const { createServer } = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
@@ -6,9 +7,11 @@ const authRouter = require('./src/routes/authRouter');
 const errorHandler = require('./src/middlewares/errorHandlerMiddleware');
 const session = require('./src/config/session.config');
 const { passport } = require('./src/config/passport.config');
+const { initializeSocketIo } = require('./src/config/socket.config');
 
-const app = express();
 const port = process.env.PORT || 4000;
+const app = express();
+const server = createServer(app);
 
 
 // --------------- SECURITY ---------------
@@ -26,7 +29,8 @@ app.use(express.static(__dirname + '/public'));
 app.use(session.middleware);
 
 // Passport session
-app.use(passport.authenticate('session'));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Body parser
 app.use(bodyParser.json());
@@ -36,13 +40,18 @@ app.use(
   })
 );
 
+// Init sockets
+initializeSocketIo(server);
+
 
 // --------------- ROUTES ---------------
 app.use('/api/auth', authRouter);
 
+// Error handler
 app.use(errorHandler);
 
-app.listen(port, () => {
+
+server.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
 });
 

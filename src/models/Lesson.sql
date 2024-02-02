@@ -16,7 +16,7 @@ RETURNS TABLE(
     title varchar(20),
     private_key varchar,
     public_key varchar,
-    fk_owner_id integer
+    owner_id integer
 )
 LANGUAGE plpgsql
 AS $$

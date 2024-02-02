@@ -12,8 +12,8 @@ CREATE OR REPLACE FUNCTION get_question_by_id (
 RETURNS TABLE(
     id integer,
     question text,
-    is_answered boolean,
-    fk_lesson_id integer
+    isAnswered boolean,
+    lessonId integer
 )
 LANGUAGE plpgsql
 AS $$
@@ -32,8 +32,8 @@ CREATE OR REPLACE FUNCTION get_question_by_lesson_id (
 RETURNS TABLE(
     id integer,
     question text,
-    is_answered boolean,
-    fk_lesson_id integer
+    isAnswered boolean,
+    lessonId integer
 )
 LANGUAGE plpgsql
 AS $$

@@ -14,9 +14,9 @@ CREATE OR REPLACE FUNCTION get_lesson_by_id(
 RETURNS TABLE(
     id integer,
     title varchar(20),
-    private_key varchar,
-    public_key varchar,
-    fk_owner_id integer
+    privateKey varchar,
+    publicKey varchar,
+    ownerId integer
 )
 LANGUAGE plpgsql
 AS $$
@@ -36,9 +36,9 @@ CREATE OR REPLACE FUNCTION get_lesson_by_public_key(
 RETURNS TABLE(
     id integer,
     title varchar(20),
-    private_key varchar,
-    public_key varchar,
-    fk_owner_id integer
+    privateKey varchar,
+    publicKey varchar,
+    ownerId integer
 )
 LANGUAGE plpgsql
 AS $$
@@ -58,9 +58,9 @@ CREATE OR REPLACE FUNCTION get_lesson_by_owner_id(
 RETURNS TABLE(
     id integer,
     title varchar(20),
-    private_key varchar,
-    public_key varchar,
-    fk_owner_id integer
+    privateKey varchar,
+    publicKey varchar,
+    ownerId integer
 )
 LANGUAGE plpgsql
 AS $$

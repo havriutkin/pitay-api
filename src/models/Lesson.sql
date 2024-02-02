@@ -1,3 +1,7 @@
+-- Extension for generating random unique identifiers (keys for lesson)
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+
 CREATE TABLE lesson(
     id SERIAL PRIMARY KEY,
     title varchar(20) NOT NULL,
@@ -76,22 +80,20 @@ $$;
 -- Insert
 CREATE OR REPLACE FUNCTION insert_lesson(
     _title varchar(20),
-    _private_key varchar,
-    _public_key varchar,
     _fk_owner_id integer
 )
-RETURNS integer
+RETURNS varchar
 LANGUAGE plpgsql
 AS $$
 DECLARE
-    new_lesson_id integer;    
+    new_public_key varchar;    
 BEGIN
     -- Insert the new lesson data into the lesson table
     INSERT INTO "lesson" (title, private_key, public_key, fk_owner_id)
-    VALUES (_title, _private_key, _public_key, _fk_owner_id)
-    RETURNING id INTO new_lesson_id;  -- Capture the id of the lesson
+    VALUES (_title, uuid_generate_v4(), uuid_generate_v4(), _fk_owner_id)
+    RETURNING public_key INTO new_public_key; 
 
-    RETURN new_lesson_id;
+    RETURN new_public_key;
 
     EXCEPTION
         WHEN unique_violation THEN 

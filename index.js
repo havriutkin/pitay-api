@@ -11,6 +11,7 @@ const { initializeSocketIo } = require('./src/config/socket.config');
 
 const authRouter = require('./src/routes/authRouter');
 const lessonRouter = require('./src/routes/lessonRouter');
+const questionRouter = require('./src/routes/questionRouter');
 
 const port = process.env.PORT || 4000;
 const app = express();
@@ -50,6 +51,7 @@ initializeSocketIo(server);
 // --------------- ROUTES ---------------
 app.use('/api/auth', authRouter);
 app.use('/api/lesson', lessonRouter);
+app.use('/api/question', questionRouter);
 
 // Error handler
 app.use(errorHandler);

@@ -1,7 +1,7 @@
 const lessonService = require('../services/lessonService');
 
 /*  
-    ? Abstract authorization from update and delete to separate function
+    ! Authorization must be abstracted as middleware
 */
 
 
@@ -19,7 +19,7 @@ module.exports.create = async(req, res, next) => {
         })
     } catch(err) {
         const newError = new Error(`Lesson controller error when creating.\n\t${err.message}`);
-        next(newError);
+        return next(newError);
     }
 
 }
@@ -48,7 +48,7 @@ const getById = async (req, res, next) => {
         });
     } catch(err) {
         const newError = new Error(`Lesson controller error when getting by id.\n\t${err.message}`);
-        next(newError);
+        return next(newError);
     }
 }
 
@@ -72,7 +72,7 @@ const getByOwnerId = async  (req, res, next) => {
         })
     } catch(err) {
         const newError = new Error(`Lesson controller error when getting by owner id.\n\t${err.message}`);
-        next(newError);
+        return next(newError);
     }
 }
 
@@ -100,7 +100,7 @@ const getByPublicKey = async (req, res, next) => {
         });
     } catch(err) {
         const newError = new Error(`Lesson controller error when getting by public key.\n\t${err.message}`);
-        next(newError);
+        return next(newError);
     }
 }
 
@@ -131,7 +131,7 @@ module.exports.update = async(req, res, next) => {
         }
     } catch(err) {
         const newError = new Error(`Lesson controller error when ensuring authorization.\n\t${err.message}`);
-        next(newError);
+        return next(newError);
     }
 
     try {
@@ -142,7 +142,7 @@ module.exports.update = async(req, res, next) => {
         })
     } catch(err) {
         const newError = new Error(`Lesson controller error when updating.\n\t${err.message}`);
-        next(newError);
+        return next(newError);
     }
 }
 
@@ -166,7 +166,7 @@ module.exports.delete = async (req, res, next) => {
         }
     } catch(err) {
         const newError = new Error(`Lesson controller error when ensuring authorization.\n\t${err.message}`);
-        next(newError);
+        return next(newError);
     }
 
     try {
@@ -176,6 +176,6 @@ module.exports.delete = async (req, res, next) => {
         })
     } catch(err) {
         const newError = new Error(`Lesson controller error when deleting.\n\t${err.message}`);
-        next(newError);
+        return next(newError);
     }
 }

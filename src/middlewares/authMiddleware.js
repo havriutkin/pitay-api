@@ -4,3 +4,5 @@ module.exports.confirmAuth = (req, res, next) => {
     }
     res.status(401).json({ message: "Not authenticated." });
 }
+
+// TODO create middleware for authorization 

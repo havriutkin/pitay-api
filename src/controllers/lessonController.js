@@ -1,9 +1,7 @@
 const lessonService = require('../services/lessonService');
 
-/*
-    TODO change route params to query string parameters
-    TODO change update and delete to public key as identifier
-    ! ATTENTION
+/*  
+    ? Abstract authorization from update and delete to separate function
 */
 
 
@@ -120,16 +118,20 @@ module.exports.get = async (req, res, next) => {
 module.exports.update = async(req, res, next) => {
     const lessonId = req.params.lessonId;
     const title = req.body?.title || false;
-    const ownerId = req.user.id;    // ! Route must be protected by auth middleware
 
     if (!title) {return res.status(400).json({message: 'No title provided.'})};
 
     // Check if user owns this lesson
-    const lesson = await lessonService.getLessonById({lessonId});
-    if (lesson[0].owner_id !== ownerId) {
-        return res.status(401).json({
-            message: 'Not owner.'
-        });
+    try {
+        const lesson = await lessonService.getLessonById({lessonId});
+        if (lesson[0].owner_id !== req.user.id) {
+            return res.status(401).json({
+                message: 'Not owner.'
+            });
+        }
+    } catch(err) {
+        const newError = new Error(`Lesson controller error when ensuring authorization.\n\t${err.message}`);
+        next(newError);
     }
 
     try {
@@ -155,12 +157,16 @@ module.exports.delete = async (req, res, next) => {
 
 
     // Check if user owns this lesson
-    // TODO try catch
-    const lesson = await lessonService.getLessonById({lessonId});
-    if (lesson[0].owner_id !== req.user.id) {
-        return res.status(401).json({
-            message: 'Not owner.'
-        });
+    try {
+        const lesson = await lessonService.getLessonById({lessonId});
+        if (lesson[0].owner_id !== req.user.id) {
+            return res.status(401).json({
+                message: 'Not owner.'
+            });
+        }
+    } catch(err) {
+        const newError = new Error(`Lesson controller error when ensuring authorization.\n\t${err.message}`);
+        next(newError);
     }
 
     try {
@@ -171,6 +177,5 @@ module.exports.delete = async (req, res, next) => {
     } catch(err) {
         const newError = new Error(`Lesson controller error when deleting.\n\t${err.message}`);
         next(newError);
-
     }
 }

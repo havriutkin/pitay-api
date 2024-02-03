@@ -26,14 +26,8 @@ module.exports.create = async(req, res, next) => {
 
 }
 
-module.exports.getById = async (req, res, next) => {
-    const lessonId = req.params?.lessonId || false;
-    
-    if (!lessonId) {
-        return res.status(400).json({
-            message: 'No id provided.'
-        })
-    }
+const getById = async (req, res, next) => {
+    const lessonId = req.query.lessonId;
 
     try {
         const result = await lessonService.getLessonById({ lessonId });
@@ -60,14 +54,8 @@ module.exports.getById = async (req, res, next) => {
     }
 }
 
-module.exports.getByOwnerId = async  (req, res, next) => {
-    const ownerId = req.params?.ownerId || false;
-
-    if (!ownerId) {
-        return res.status(400).json({
-            message: 'No owner id provided.'
-        })
-    }
+const getByOwnerId = async  (req, res, next) => {
+    const ownerId = req.query.ownerId;
 
     try {
         const result = await lessonService.getLessonsByOwnerId({ownerId});
@@ -90,14 +78,8 @@ module.exports.getByOwnerId = async  (req, res, next) => {
     }
 }
 
-module.exports.getByPublicKey = async (req, res, next) => {
-    const publicKey = req.params?.publicKey || false;
-    
-    if (!publicKey) {
-        return res.status(400).json({
-            message: 'No public key provided.'
-        })
-    }
+const getByPublicKey = async (req, res, next) => {
+    const publicKey = req.query.publicKey;
 
     try {
         const result = await lessonService.getLessonByPublicKey({ publicKey });
@@ -122,6 +104,17 @@ module.exports.getByPublicKey = async (req, res, next) => {
         const newError = new Error(`Lesson controller error when getting by public key.\n\t${err.message}`);
         next(newError);
     }
+}
+
+module.exports.get = async (req, res, next) => {
+    const { lessonId, ownerId, publicKey } = req.query;
+    if (lessonId) { return getById(req, res, next) }
+    if (ownerId) { return getByOwnerId(req, res, next) }
+    if (publicKey) { return getByPublicKey(req, res, next) }
+
+    return res.status(400).json({
+        message: 'Bad request.'
+    });
 }
 
 module.exports.update = async(req, res, next) => {

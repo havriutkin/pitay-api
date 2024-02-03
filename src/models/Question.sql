@@ -74,8 +74,7 @@ $$;
 CREATE OR REPLACE FUNCTION update_question(
     _id integer,
     _question text,
-    _is_answered boolean,
-    _lesson_id integer
+    _is_answered boolean
 )
 RETURNS integer
 LANGUAGE plpgsql
@@ -86,14 +85,12 @@ BEGIN
     END IF;
 
     UPDATE "question"
-    SET question = _question, is_answered = _is_answered, fk_lesson_id = _lesson_id
+    SET question = _question, is_answered = _is_answered
     WHERE id = _id;
 
     RETURN _id;
 
     EXCEPTION
-        WHEN foreign_key_violation THEN
-            RAISE EXCEPTION 'Lesson not found.';
         WHEN not_null_violation THEN
             RAISE EXCEPTION 'Not enough data.';
 END;

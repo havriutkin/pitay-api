@@ -33,3 +33,23 @@ module.exports.getByLessonId = async (req, res, next) => {
         return next(newError);
     }
 }
+
+module.exports.update = async (req, res, next) => {
+    // TODO
+    // ! Auth
+    try {
+        const questionId = req.params.questionId;
+        const currentQuestionObj = (await questionService.getQuestionById({questionId}))[0];
+        
+        const isAnswered = req.body.isAnswered || currentQuestionObj.isAnswered;
+        const question = req.body.question || currentQuestionObj.question;
+
+        await questionService.updateQuestionById({questionId, question, isAnswered});
+        res.status(200).json({
+            message: 'Success. Question was updated'
+        })
+    } catch(err) {
+        const newError = new Error(`Question controller error when updating.\n\t${err.message}`);
+        return next(newError);
+    }
+}

@@ -42,9 +42,9 @@ module.exports.getQuestionsByLessonId = async ({lessonId}) => {
 
 /* ------------- UPDATE ------------- */
 
-module.exports.updateQuestionById = async ({questionId, question, isAnswered, lessonId}) => {
-    const sql = "SELECT update_question($1, $2, $3, $4)";
-    const parameters = [questionId, question, isAnswered, lessonId];
+module.exports.updateQuestionById = async ({questionId, question, isAnswered}) => {
+    const sql = "SELECT update_question($1, $2, $3)";
+    const parameters = [questionId, question, isAnswered];
 
     try {
         const result = query(sql, parameters);

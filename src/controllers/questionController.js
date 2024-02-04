@@ -3,9 +3,6 @@ const lessonService = require('../services/lessonService');
 
 // ! Authorization must be abstracted as middleware
 
-// TODO update -> change status
-// TODO delete 
-
 module.exports.getByLessonId = async (req, res, next) => {
     const lessonId = req.params.lessonId;
 

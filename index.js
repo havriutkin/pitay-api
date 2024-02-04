@@ -24,6 +24,8 @@ app.disable('x-powered-by')
 
 app.use(helmet());
 
+// ! ADD CORS
+
 
 // --------------- MIDDLEWARES ---------------
 // Static files 

@@ -2,7 +2,7 @@ CREATE TABLE question(
     id SERIAL PRIMARY KEY,
     question text NOT NULL,
     is_answered boolean NOT NULL,
-    fk_lesson_id integer NOT NULL REFERENCES "lesson" (id)
+    fk_lesson_id integer NOT NULL REFERENCES "lesson" (id) ON DELETE CASCADE
 );
 
 -- Get by id

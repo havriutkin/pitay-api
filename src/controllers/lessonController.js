@@ -1,9 +1,5 @@
 const lessonService = require('../services/lessonService');
 
-/*  
-    ! Authorization must be abstracted as middleware
-*/
-
 
 module.exports.create = async(req, res, next) => {
     const title = req.body?.title || false;
@@ -121,19 +117,6 @@ module.exports.update = async(req, res, next) => {
 
     if (!title) {return res.status(400).json({message: 'No title provided.'})};
 
-    // Check if user owns this lesson
-    try {
-        const lesson = await lessonService.getLessonById({lessonId});
-        if (lesson[0].owner_id !== req.user.id) {
-            return res.status(401).json({
-                message: 'Not owner.'
-            });
-        }
-    } catch(err) {
-        const newError = new Error(`Lesson controller error when ensuring authorization.\n\t${err.message}`);
-        return next(newError);
-    }
-
     try {
         const result = await lessonService.updateLessonById({lessonId, title});
         return res.status(201).json({
@@ -147,27 +130,7 @@ module.exports.update = async(req, res, next) => {
 }
 
 module.exports.delete = async (req, res, next) => {
-    const lessonId = req.params?.lessonId || false;
-
-    if (!lessonId) {
-        return res.status(400).json({
-            message: "No lesson id provided."
-        })
-    }
-
-
-    // Check if user owns this lesson
-    try {
-        const lesson = await lessonService.getLessonById({lessonId});
-        if (lesson[0].owner_id !== req.user.id) {
-            return res.status(401).json({
-                message: 'Not owner.'
-            });
-        }
-    } catch(err) {
-        const newError = new Error(`Lesson controller error when ensuring authorization.\n\t${err.message}`);
-        return next(newError);
-    }
+    const lessonId = req.params?.lessonId;
 
     try {
         await lessonService.deleteLessonById({ lessonId });

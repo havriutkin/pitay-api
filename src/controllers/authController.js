@@ -18,7 +18,8 @@ module.exports.signUp = async (req, res, next) => {
         req.login(user, (err) => {
             if (err) { return next(err) }
             res.status(201).json({
-                message: "Successfully signed up and logged in."
+                message: "Successfully signed up and logged in.",
+                user: user
             })
         })
     } catch(err) {
@@ -32,7 +33,14 @@ module.exports.loginPassword = async (req, res, next) => {
         if (!user) { return res.status(401).json({ message: 'Authentication failed' }) }
         req.login(user, (err) => {
             if (err) { return next(err) }
-            return res.status(200).json({ message: 'Successfully logged in' });
+            return res.status(200).json({ 
+                message: 'Successfully logged in', 
+                user: {
+                    id: user.id,
+                    username: user.username,
+                    email: user.email
+                }
+            });
         })
     })(req, res, next);
 }

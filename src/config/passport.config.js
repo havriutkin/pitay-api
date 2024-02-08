@@ -3,7 +3,11 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 
-passport.use(new LocalStrategy(async function verify(email, password, cb){
+passport.use(new LocalStrategy({
+        usernameField: 'email', // Use email as the username field
+        passwordField: 'password', // You can also specify a password field if needed, but it defaults to 'password'
+    },
+    async function verify(email, password, cb){
     try {
         const data = await userService.getUserByEmail({email});
 

@@ -2,6 +2,7 @@ const { createServer } = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
+const cors = require('cors');
 
 
 const errorHandler = require('./src/middlewares/errorHandlerMiddleware');
@@ -24,8 +25,11 @@ app.disable('x-powered-by')
 
 app.use(helmet());
 
-// ! ADD CORS
-
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}))
 
 // --------------- MIDDLEWARES ---------------
 // Static files 

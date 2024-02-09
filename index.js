@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const cors = require('cors');
+const morgan = require('morgan');
 
 
 const errorHandler = require('./src/middlewares/errorHandlerMiddleware');
@@ -52,6 +53,9 @@ app.use(
 
 // Init sockets
 initializeSocketIo(server);
+
+// Logger
+app.use(morgan('dev'));
 
 
 // --------------- ROUTES ---------------

@@ -1,6 +1,7 @@
 const errorHandler = async (err, req, res, next) => {
     const errStatus = err.statusCode || 500;
     const errMsg = err.message || 'Server error occurred.';
+    console.error(errMsg);
     return res.status(errStatus).json({
         success: false,
         status: errStatus,
